@@ -2,12 +2,15 @@
 
 from contextlib import asynccontextmanager
 import logging
+import json
+from pathlib import Path
 from typing import AsyncIterator
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app import config
 from app.api.routes import router
@@ -73,6 +76,25 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 # Register API routes
 app.include_router(router)
+
+# Mount static files and serve interactive visual dashboard
+static_dir = Path(__file__).parent / "static"
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+    @app.get("/", response_class=HTMLResponse, include_in_schema=False)
+    async def serve_dashboard() -> FileResponse:
+        """Serves the interactive GridWise energy optimizer web dashboard."""
+        return FileResponse(static_dir / "index.html")
+
+    @app.get("/api/scenarios", include_in_schema=False)
+    async def get_public_scenarios():
+        """Provides the 10 public challenge scenarios for the dashboard preset selector."""
+        data_path = Path(__file__).parent.parent / "data" / "public_cases.json"
+        if data_path.exists():
+            with open(data_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        return {"cases": []}
 
 
 if __name__ == "__main__":
