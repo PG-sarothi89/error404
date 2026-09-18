@@ -4,11 +4,24 @@
 > Smart Campus Energy Optimization with LLM-Assisted Operator Directive Interpretation
 
 ### 🌐 Live Deployment & Interactive Dashboard
-- **Web Dashboard:** [https://antonio-horses-worthy-hrs.trycloudflare.com](https://antonio-horses-worthy-hrs.trycloudflare.com)
-- **API Health Check:** [https://antonio-horses-worthy-hrs.trycloudflare.com/health](https://antonio-horses-worthy-hrs.trycloudflare.com/health)
-- **Swagger Documentation:** [https://antonio-horses-worthy-hrs.trycloudflare.com/docs](https://antonio-horses-worthy-hrs.trycloudflare.com/docs)
-- **ReDoc API Reference:** [https://antonio-horses-worthy-hrs.trycloudflare.com/redoc](https://antonio-horses-worthy-hrs.trycloudflare.com/redoc)
-- **POST Optimization Endpoint:** `https://antonio-horses-worthy-hrs.trycloudflare.com/optimize-energy`
+- **Web Dashboard:** https://wanting-traffic-fork-cord.trycloudflare.com
+- **API Health Check:** [https://wanting-traffic-fork-cord.trycloudflare.com/health](https://wanting-traffic-fork-cord.trycloudflare.com/health)
+- **Swagger Documentation:** [https://wanting-traffic-fork-cord.trycloudflare.com/docs](https://wanting-traffic-fork-cord.trycloudflare.com/docs)
+- **ReDoc API Reference:** [https://wanting-traffic-fork-cord.trycloudflare.com/redoc](https://wanting-traffic-fork-cord.trycloudflare.com/redoc)
+- **POST Optimization Endpoint:** `POST https://wanting-traffic-fork-cord.trycloudflare.com/optimize-energy`
+
+> Cloudflare Quick-Tunnel URLs are ephemeral. For a permanent deployment, use one of the
+> first-class platforms below (each button connects this GitHub repo to the platform and
+> builds from the included `Dockerfile`):
+
+| Platform | One-click deploy | Notes |
+| --- | --- | --- |
+| Render | [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/PG-sarothi89/error404) | Uses `render.yaml` blueprint · free web service |
+| Railway | [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?repo=https://github.com/PG-sarothi89/error404) | Uses `railway.toml` · set `GEMINI_API_KEY` |
+| Fly.io | [`fly launch --repo https://github.com/PG-sarothi89/error404`](https://fly.io/docs/flyctl/launch/) | Uses `fly.toml` · `fly secrets set GEMINI_API_KEY=…` |
+
+> After deploy, set the secret `GEMINI_API_KEY` (or another supported provider key) in the
+> platform dashboard. The service binds to `$PORT` automatically.
 
 ---
 
@@ -339,6 +352,12 @@ docker run -d --name gridwise -p 8000:8000 \
 ```bash
 docker-compose up -d --build
 ```
+
+### Continuous Integration (GitHub Actions)
+
+Every push and pull request runs the full test matrix on Python 3.11 and 3.12 via
+`.github/workflows/ci.yml`. The job installs dependencies and runs `pytest -q`
+with `LLM_PROVIDER=fallback` so it never needs a real API key.
 
 ---
 

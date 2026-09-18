@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+  <!-- ACCESSIBILITY: SKIP LINK -->
+  <a class="skip-link" href="#dashboardMain">Skip to dashboard</a>
 
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toastContainer" class="toast-container" aria-live="polite" role="status"></div>
@@ -29,9 +31,9 @@
       </div>
 
       <div class="nav-status">
-        <div class="status-pill status-live">
+        <div class="status-pill status-live" id="navApiStatus">
           <span class="pulse-dot" aria-hidden="true"></span>
-          <span>API Live</span>
+          <span id="navApiText">API Live</span>
         </div>
         <div class="status-pill status-ai">
           <span class="ai-sparkle">✨</span>
@@ -53,7 +55,7 @@
   </header>
 
   <!-- DASHBOARD CONTAINER -->
-  <main class="dashboard-container">
+  <main class="dashboard-container" id="dashboardMain">
 
     <!-- LEFT COLUMN: INPUT STUDIO -->
     <section class="studio-column" aria-label="Input Configuration Studio">
@@ -70,9 +72,28 @@
         <div id="presetContainer" class="preset-bar" role="group" aria-label="Scenario Presets">
           <!-- Preset buttons injected by JS -->
         </div>
-        <div class="form-group" style="margin-bottom: 0;">
+        <div class="form-group" style="margin-bottom: 0.75rem;">
           <label class="form-label" for="scenarioIdInput">Active Scenario ID</label>
           <input type="text" id="scenarioIdInput" class="form-input" value="SAMPLE-01" spellcheck="false" autocomplete="off">
+        </div>
+        <!-- SCENARIO QUICK PROFILE STATS -->
+        <div id="scenarioProfileBox" class="scenario-profile-box" aria-label="Scenario Energy Profile">
+          <div class="profile-stat">
+            <span class="stat-label">24h Demand</span>
+            <span class="stat-val" id="profileDemand">-- kWh</span>
+          </div>
+          <div class="profile-stat">
+            <span class="stat-label">Solar Total</span>
+            <span class="stat-val" id="profileSolar">-- kWh</span>
+          </div>
+          <div class="profile-stat">
+            <span class="stat-label">Peak Tariff</span>
+            <span class="stat-val" id="profileTariff">-- BDT</span>
+          </div>
+          <div class="profile-stat">
+            <span class="stat-label">Solar Coverage</span>
+            <span class="stat-val" id="profileSolarCoverage">--%</span>
+          </div>
         </div>
       </div>
 
@@ -82,7 +103,7 @@
           <h2 class="card-title">
             <span class="card-title-icon" aria-hidden="true">🗣️</span> Operator Natural-Language Notes
           </h2>
-          <span class="header-badge">1 to 3 Directives</span>
+          <span class="header-badge" id="noteCountBadge">1 to 3 Directives</span>
         </div>
         <p class="section-desc">Operational constraints and notices parsed by Gemini into verified math constraints:</p>
         <div id="notesContainer" class="notes-container">
@@ -222,6 +243,7 @@
           </h2>
           <div class="chart-legend">
             <span class="legend-item"><span class="legend-line legend-demand"></span> Demand</span>
+            <span class="legend-item"><span class="legend-line legend-forecast"></span> Solar Forecast</span>
             <span class="legend-item"><span class="legend-box legend-solar"></span> Solar Used</span>
             <span class="legend-item"><span class="legend-line legend-grid"></span> Grid Import</span>
             <span class="legend-item"><span class="legend-line legend-battery"></span> Battery SoC</span>
@@ -236,29 +258,37 @@
 
       <!-- HOURLY PLAN MATRIX TABLE CARD -->
       <div class="card">
-        <div class="card-header">
+        <div class="card-header table-header-flex">
           <h2 class="card-title">
             <span class="card-title-icon" aria-hidden="true">📋</span> Hourly Plan Matrix (24h)
           </h2>
-          <span class="header-badge">Complete Schedule</span>
+          <div class="table-actions-group">
+            <button type="button" id="btnExportCsv" class="btn-action-small" aria-label="Export Schedule as CSV">
+              <span>📥</span> Export CSV
+            </button>
+            <span class="header-badge">Complete Schedule</span>
+          </div>
         </div>
         <div class="table-container">
-          <table class="data-table">
+          <table class="data-table" id="matrixTable">
             <thead>
               <tr>
                 <th scope="col" class="sticky-col col-hour">Hour</th>
                 <th scope="col" class="col-num">Demand (kWh)</th>
-                <th scope="col" class="col-num">Solar (kWh)</th>
-                <th scope="col" class="col-num">Grid Import (kWh)</th>
+                <th scope="col" class="col-num">Solar Used</th>
+                <th scope="col" class="col-num">Grid Import</th>
                 <th scope="col" class="col-action">Battery Action</th>
                 <th scope="col" class="col-num">Battery Rate</th>
-                <th scope="col" class="col-num">SoC After (kWh)</th>
+                <th scope="col" class="col-num">SoC After</th>
                 <th scope="col" class="col-num">Tariff (BDT)</th>
               </tr>
             </thead>
             <tbody id="tableBody">
               <!-- Hourly rows injected by JS -->
             </tbody>
+            <tfoot id="tableFoot">
+              <!-- Summary totals injected by JS -->
+            </tfoot>
           </table>
         </div>
       </div>
@@ -275,14 +305,20 @@
           <div class="json-card">
             <div class="json-header">
               <span class="form-label">Request Payload (POST /optimize-energy)</span>
-              <button type="button" class="copy-btn" onclick="copyJson('requestJson')">📋 Copy</button>
+              <div class="json-header-buttons">
+                <button type="button" class="copy-btn" id="btnDownloadReq" aria-label="Download request JSON">📥 Download</button>
+                <button type="button" class="copy-btn" data-copy-target="requestJson" aria-label="Copy request payload">📋 Copy</button>
+              </div>
             </div>
             <pre class="code-box" id="requestJson">{}</pre>
           </div>
           <div class="json-card">
             <div class="json-header">
               <span class="form-label">Response Payload (HTTP 200 OK)</span>
-              <button type="button" class="copy-btn" onclick="copyJson('responseJson')">📋 Copy</button>
+              <div class="json-header-buttons">
+                <button type="button" class="copy-btn" id="btnDownloadRes" aria-label="Download response JSON">📥 Download</button>
+                <button type="button" class="copy-btn" data-copy-target="responseJson" aria-label="Copy response payload">📋 Copy</button>
+              </div>
             </div>
             <pre class="code-box" id="responseJson">{}</pre>
           </div>

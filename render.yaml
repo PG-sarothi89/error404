@@ -1,0 +1,31 @@
+# Render Blueprint · one-click deploy for GridWise 2.0
+# Usage: connect this repo at https://render.com → New → Blueprint → point at this file.
+services:
+  - type: web
+    name: gridwise-2-0
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /health
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: HOST
+        value: 0.0.0.0
+      - key: ENV
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: GEMINI_API_KEY
+        sync: false        # set this manually in the Render dashboard
+      - key: GEMINI_MODEL
+        value: gemini-3-flash-preview
+      - key: LLM_TIMEOUT_SECONDS
+        value: "12.0"
+      - key: SOLVER_TIMEOUT_SECONDS
+        value: "5.0"
+      - key: TOTAL_TIMEOUT_SECONDS
+        value: "28.0"
