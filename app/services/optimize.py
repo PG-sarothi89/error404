@@ -5,6 +5,7 @@ from app.directives.compiler import compile_directives
 from app.guardrails.validator import validate_directives_guardrails
 from app.llm.interpreter import LLMInterpreter
 from app.optimizer.solver import solve_schedule
+from app.schemas.interpretation import DirectiveType
 from app.schemas.request import OptimizeEnergyRequest
 from app.schemas.response import OptimizeEnergyResponse
 from app.validation.replay import replay_and_validate_plan
@@ -63,11 +64,31 @@ class OptimizationService:
         total_cost = sum(entry.grid_kwh * request.hours[entry.hour].tariff_bdt_per_kwh for entry in hourly_plan)
         peak_grid = max(entry.grid_kwh for entry in hourly_plan)
 
-        # Stage 7: Exact Response Building
-        plan_summary = (
-            "Schedule prioritizes available solar, shifts battery energy toward higher-tariff periods, "
-            "and respects all operator constraints."
-        )
+        # Stage 7: Exact Response Building (contextual strategy summary)
+        summary_parts: list[str] = []
+        for interp in interpretations:
+            if interp.applies and interp.directive_type != DirectiveType.NO_OP:
+                if interp.directive_type == DirectiveType.SOLAR_REDUCTION:
+                    summary_parts.append("incorporates reduced solar availability")
+                elif interp.directive_type == DirectiveType.MINIMUM_BATTERY_RESERVE:
+                    summary_parts.append("maintains mandated emergency battery reserve")
+                elif interp.directive_type == DirectiveType.NO_CHARGE_WINDOW:
+                    summary_parts.append("observes restricted charging window")
+                elif interp.directive_type == DirectiveType.NO_DISCHARGE_WINDOW:
+                    summary_parts.append("observes restricted discharging window")
+                elif interp.directive_type == DirectiveType.MAX_GRID_WINDOW:
+                    summary_parts.append("strictly adheres to peak grid intake limits")
+
+        if summary_parts:
+            plan_summary = (
+                f"Optimized 24-hour schedule {', '.join(summary_parts)}, "
+                f"shifts battery energy to avoid peak tariffs, and restores end-of-day battery neutrality."
+            )
+        else:
+            plan_summary = (
+                "Schedule prioritizes available solar, shifts battery energy toward higher-tariff periods, "
+                "and maintains end-of-day battery neutrality."
+            )
 
         return OptimizeEnergyResponse(
             scenario_id=request.scenario_id,

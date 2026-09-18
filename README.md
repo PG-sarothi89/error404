@@ -176,7 +176,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 | `PORT` | `8000` | Port number |
 | `LLM_PROVIDER` | `gemini` | Model provider: `gemini`, `openai`, `groq`, or `fallback` |
 | `GEMINI_API_KEY` | `""` | Google Gemini API key |
-| `GEMINI_MODEL` | `gemini-2.5-flash` | Gemini model name |
+| `GEMINI_MODEL` | `gemini-3-flash-preview` | Gemini model name |
 | `OPENAI_API_KEY` | `""` | OpenAI API key |
 | `OPENAI_BASE_URL` | `https://api.openai.com/v1` | OpenAI-compatible endpoint |
 | `OPENAI_MODEL` | `gpt-4o-mini` | OpenAI model name |
@@ -243,6 +243,54 @@ curl -X POST http://localhost:8000/optimize-energy \
       "max_discharge_kwh_per_hour": 50
     }
   }'
+```
+
+**Response (200 OK):**
+```json
+{
+  "scenario_id": "DEMO-01",
+  "directive_interpretation": [
+    {
+      "note_index": 0,
+      "applies": true,
+      "directive_type": "solar_reduction",
+      "structured_adjustment": {
+        "hours": [12, 13],
+        "factor": 0.25
+      },
+      "explanation": "Solar availability is reduced to 25% during the panel-cleaning window."
+    },
+    {
+      "note_index": 1,
+      "applies": false,
+      "directive_type": "no_op",
+      "structured_adjustment": null,
+      "explanation": "This note does not affect today's 24-hour energy schedule."
+    }
+  ],
+  "hourly_plan": [
+    {
+      "hour": 0,
+      "grid_kwh": 90.0,
+      "solar_used_kwh": 0.0,
+      "battery_action": "idle",
+      "battery_kwh": 0.0,
+      "battery_energy_after_kwh": 110.0
+    },
+    {
+      "hour": 1,
+      "grid_kwh": 45.0,
+      "solar_used_kwh": 0.0,
+      "battery_action": "discharge",
+      "battery_kwh": 40.0,
+      "battery_energy_after_kwh": 70.0
+    }
+  ],
+  "total_grid_kwh": 2692.5,
+  "total_cost_bdt": 38365.0,
+  "peak_grid_kwh": 175.0,
+  "plan_summary": "Optimized 24-hour schedule incorporates reduced solar availability, shifts battery energy to avoid peak tariffs, and restores end-of-day battery neutrality."
+}
 ```
 
 ---
