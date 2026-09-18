@@ -3,7 +3,15 @@
 > **BUP CSE Fest 2026 · Hackathon · Preliminary Round**  
 > Smart Campus Energy Optimization with LLM-Assisted Operator Directive Interpretation
 
+### 🌐 Live Deployment & Interactive Dashboard
+- **Web Dashboard:** [https://antonio-horses-worthy-hrs.trycloudflare.com](https://antonio-horses-worthy-hrs.trycloudflare.com)
+- **API Health Check:** [https://antonio-horses-worthy-hrs.trycloudflare.com/health](https://antonio-horses-worthy-hrs.trycloudflare.com/health)
+- **Swagger Documentation:** [https://antonio-horses-worthy-hrs.trycloudflare.com/docs](https://antonio-horses-worthy-hrs.trycloudflare.com/docs)
+- **ReDoc API Reference:** [https://antonio-horses-worthy-hrs.trycloudflare.com/redoc](https://antonio-horses-worthy-hrs.trycloudflare.com/redoc)
+- **POST Optimization Endpoint:** `https://antonio-horses-worthy-hrs.trycloudflare.com/optimize-energy`
+
 ---
+
 
 ## 1. Problem Overview
 
