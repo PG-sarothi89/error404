@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <meta name="theme-color" content="#070a12">
+  <meta name="theme-color" content="#090d16">
   <meta name="description" content="GridWise 2.0 · Smart Campus Energy Optimizer with Gemini LLM Directive Interpretation">
   <title>GridWise 2.0 · Smart Campus Energy Optimizer</title>
-  <!-- Modern Google Fonts -->
+  <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,32 +19,35 @@
 
   <!-- NAVBAR -->
   <header class="navbar">
-    <div class="brand">
-      <div class="brand-icon" aria-hidden="true">⚡</div>
-      <div>
-        <span class="brand-title">GridWise 2.0</span>
-        <span class="brand-badge">BUP CSE Fest 2026</span>
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">⚡</div>
+        <div class="brand-text-group">
+          <span class="brand-title">GridWise 2.0</span>
+          <span class="brand-badge">BUP CSE Fest 2026</span>
+        </div>
       </div>
-    </div>
 
-    <div class="nav-status">
-      <div class="status-pill status-live">
-        <span class="pulse-dot" aria-hidden="true"></span>
-        <span>API Live</span>
-      </div>
-      <div class="status-pill status-ai">
-        <span>🤖 Gemini 3 Flash</span>
-      </div>
-      <div class="nav-links">
-        <a href="/docs" target="_blank" class="nav-btn" title="Open Swagger OpenAPI Documentation">
-          <span>📖</span> <span class="nav-text">Swagger Docs</span>
-        </a>
-        <a href="/redoc" target="_blank" class="nav-btn" title="Open ReDoc API Documentation">
-          <span>📑</span> <span class="nav-text">ReDoc</span>
-        </a>
-        <a href="https://github.com/PG-sarothi89/error404" target="_blank" class="nav-btn" title="View Source Repository on GitHub">
-          <span>🔗</span> <span class="nav-text">GitHub</span>
-        </a>
+      <div class="nav-status">
+        <div class="status-pill status-live">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>API Live</span>
+        </div>
+        <div class="status-pill status-ai">
+          <span class="ai-sparkle">✨</span>
+          <span>Gemini 3 Flash</span>
+        </div>
+        <div class="nav-links">
+          <a href="/docs" target="_blank" class="nav-btn" title="Open Swagger OpenAPI Documentation">
+            <span>📖</span> <span class="nav-text">Swagger</span>
+          </a>
+          <a href="/redoc" target="_blank" class="nav-btn" title="Open ReDoc API Documentation">
+            <span>📑</span> <span class="nav-text">ReDoc</span>
+          </a>
+          <a href="https://github.com/PG-sarothi89/error404" target="_blank" class="nav-btn" title="View Source Repository on GitHub">
+            <span>🔗</span> <span class="nav-text">GitHub</span>
+          </a>
+        </div>
       </div>
     </div>
   </header>
@@ -55,33 +58,33 @@
     <!-- LEFT COLUMN: INPUT STUDIO -->
     <section class="studio-column" aria-label="Input Configuration Studio">
       
-      <!-- PRESET SELECTOR -->
+      <!-- PRESET SELECTOR CARD -->
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">
             <span class="card-title-icon" aria-hidden="true">📂</span> Public Challenge Scenarios
           </h2>
-          <span class="header-badge" id="presetCountBadge">10 Scenarios</span>
+          <span class="header-badge" id="presetCountBadge">10 Cases</span>
         </div>
-        <p class="section-desc">Select any benchmark test case to load operator notes and 24-hour load profile:</p>
+        <p class="section-desc">Select a competition benchmark case to populate notes and load profiles:</p>
         <div id="presetContainer" class="preset-bar" role="group" aria-label="Scenario Presets">
           <!-- Preset buttons injected by JS -->
         </div>
-        <div class="form-group">
-          <label class="form-label" for="scenarioIdInput">Scenario ID</label>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label" for="scenarioIdInput">Active Scenario ID</label>
           <input type="text" id="scenarioIdInput" class="form-input" value="SAMPLE-01" spellcheck="false" autocomplete="off">
         </div>
       </div>
 
-      <!-- OPERATOR NOTES STUDIO -->
+      <!-- OPERATOR NOTES STUDIO CARD -->
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">
-            <span class="card-title-icon" aria-hidden="true">🗣️</span> Natural-Language Operator Notes
+            <span class="card-title-icon" aria-hidden="true">🗣️</span> Operator Natural-Language Notes
           </h2>
-          <span class="header-badge">Max 3</span>
+          <span class="header-badge">1 to 3 Directives</span>
         </div>
-        <p class="section-desc">Enter operational directives in plain English (e.g. cloud cover, maintenance, reserve):</p>
+        <p class="section-desc">Operational constraints and notices parsed by Gemini into verified math constraints:</p>
         <div id="notesContainer" class="notes-container">
           <!-- Notes injected by JS -->
         </div>
@@ -90,36 +93,49 @@
         </button>
       </div>
 
-      <!-- BATTERY STORAGE SPECS -->
+      <!-- BATTERY STORAGE SPECS CARD -->
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">
             <span class="card-title-icon" aria-hidden="true">🔋</span> Battery Storage Parameters
           </h2>
-          <span class="header-badge">BESS Specs</span>
+          <span class="header-badge">BESS Configuration</span>
         </div>
-        <div class="grid-2col">
+        <div class="battery-grid">
           <div class="form-group">
-            <label class="form-label" for="batteryCapacity">Capacity (kWh)</label>
-            <input type="number" id="batteryCapacity" class="form-input" value="220" min="0" step="1">
+            <label class="form-label" for="batteryCapacity">Capacity</label>
+            <div class="input-wrapper">
+              <input type="number" id="batteryCapacity" class="form-input" value="220" min="0" step="1">
+              <span class="input-unit">kWh</span>
+            </div>
           </div>
           <div class="form-group">
-            <label class="form-label" for="batteryInitial">Initial SoC (kWh)</label>
-            <input type="number" id="batteryInitial" class="form-input" value="110" min="0" step="1">
+            <label class="form-label" for="batteryInitial">Initial SoC</label>
+            <div class="input-wrapper">
+              <input type="number" id="batteryInitial" class="form-input" value="110" min="0" step="1">
+              <span class="input-unit">kWh</span>
+            </div>
           </div>
-        </div>
-        <div class="grid-3col">
           <div class="form-group">
             <label class="form-label" for="batteryMin">Min Reserve</label>
-            <input type="number" id="batteryMin" class="form-input" value="40" min="0" step="1">
+            <div class="input-wrapper">
+              <input type="number" id="batteryMin" class="form-input" value="40" min="0" step="1">
+              <span class="input-unit">kWh</span>
+            </div>
           </div>
           <div class="form-group">
-            <label class="form-label" for="batteryMaxCharge">Max Charge/h</label>
-            <input type="number" id="batteryMaxCharge" class="form-input" value="50" min="0" step="1">
+            <label class="form-label" for="batteryMaxCharge">Max Charge</label>
+            <div class="input-wrapper">
+              <input type="number" id="batteryMaxCharge" class="form-input" value="50" min="0" step="1">
+              <span class="input-unit">kW</span>
+            </div>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="batteryMaxDischarge">Max Dischg/h</label>
-            <input type="number" id="batteryMaxDischarge" class="form-input" value="50" min="0" step="1">
+          <div class="form-group span-full">
+            <label class="form-label" for="batteryMaxDischarge">Max Discharge</label>
+            <div class="input-wrapper">
+              <input type="number" id="batteryMaxDischarge" class="form-input" value="50" min="0" step="1">
+              <span class="input-unit">kW</span>
+            </div>
           </div>
         </div>
       </div>
@@ -127,7 +143,7 @@
       <!-- PRIMARY ACTION BUTTON -->
       <button type="button" id="btnRunOptimization" class="btn-run">
         <span class="btn-icon">⚡</span>
-        <span class="btn-text">Run LLM Energy Optimization</span>
+        <span class="btn-text">RUN LLM ENERGY OPTIMIZATION</span>
       </button>
 
     </section>
@@ -137,7 +153,9 @@
 
       <!-- STRATEGY SUMMARY BOX -->
       <div class="summary-box" role="region" aria-label="Strategy Summary">
-        <span class="summary-icon" aria-hidden="true">💡</span>
+        <div class="summary-icon-wrapper">
+          <span class="summary-icon" aria-hidden="true">💡</span>
+        </div>
         <div class="summary-content">
           <span class="summary-header">Optimization Strategy & System Directives</span>
           <p id="summaryText">Schedule prioritizes available solar, shifts battery energy toward higher-tariff periods, and maintains end-of-day battery neutrality.</p>
@@ -147,32 +165,47 @@
       <!-- EXECUTIVE KPI GRID -->
       <div class="kpi-grid">
         <div class="kpi-card kpi-cost">
-          <div class="kpi-label">Total Energy Cost</div>
+          <div class="kpi-header">
+            <span class="kpi-label">Total Energy Cost</span>
+            <span class="kpi-icon">💰</span>
+          </div>
           <div class="kpi-value" id="kpiCost">৳0</div>
-          <div class="kpi-sub" id="kpiSavings">Savings vs Baseline: Calculating...</div>
+          <div class="kpi-sub" id="kpiSavings">Calculating baseline...</div>
         </div>
+
         <div class="kpi-card kpi-grid-energy">
-          <div class="kpi-label">Total Grid Import</div>
+          <div class="kpi-header">
+            <span class="kpi-label">Total Grid Import</span>
+            <span class="kpi-icon">🔌</span>
+          </div>
           <div class="kpi-value" id="kpiGrid">0 kWh</div>
           <div class="kpi-sub">24-hour purchased energy</div>
         </div>
+
         <div class="kpi-card kpi-peak">
-          <div class="kpi-label">Peak Grid Load</div>
+          <div class="kpi-header">
+            <span class="kpi-label">Peak Grid Load</span>
+            <span class="kpi-icon">⚡</span>
+          </div>
           <div class="kpi-value" id="kpiPeak">0 kW</div>
           <div class="kpi-sub">Maximum hourly intake</div>
         </div>
+
         <div class="kpi-card kpi-directives">
-          <div class="kpi-label">LLM Directives</div>
+          <div class="kpi-header">
+            <span class="kpi-label">LLM Directives</span>
+            <span class="kpi-icon">🤖</span>
+          </div>
           <div class="kpi-value" id="kpiDirectives">0 Notes</div>
-          <div class="kpi-sub" id="kpiLatency">Latency: 0ms</div>
+          <div class="kpi-sub" id="kpiLatency">Engine Latency: 0ms</div>
         </div>
       </div>
 
-      <!-- LLM DIRECTIVES BREAKDOWN -->
+      <!-- LLM DIRECTIVES BREAKDOWN CARD -->
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">
-            <span class="card-title-icon" aria-hidden="true">🤖</span> Interpreted Directives & Guardrail Status
+            <span class="card-title-icon" aria-hidden="true">🤖</span> Interpreted Directives & Guardrails
           </h2>
           <span class="header-badge" id="directiveCountBadge">0 Active</span>
         </div>
@@ -181,7 +214,7 @@
         </div>
       </div>
 
-      <!-- INTERACTIVE DISPATCH CHART -->
+      <!-- INTERACTIVE DISPATCH CHART CARD -->
       <div class="card">
         <div class="card-header chart-header-row">
           <h2 class="card-title">
@@ -198,10 +231,10 @@
           <canvas id="dispatchChart"></canvas>
           <div id="chartTooltip" class="chart-tooltip" style="display: none;"></div>
         </div>
-        <div class="chart-hint">💡 Hover or touch along the chart to inspect hourly power flows, battery action, and tariff rates.</div>
+        <div class="chart-hint">💡 Hover or touch along the chart to inspect hourly power flows, battery dispatch, and tariff rates.</div>
       </div>
 
-      <!-- HOURLY PLAN MATRIX TABLE -->
+      <!-- HOURLY PLAN MATRIX TABLE CARD -->
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">
@@ -213,14 +246,14 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th scope="col" class="sticky-col">Hour</th>
-                <th scope="col">Demand (kWh)</th>
-                <th scope="col">Solar (kWh)</th>
-                <th scope="col">Grid Import (kWh)</th>
-                <th scope="col">Battery Action</th>
-                <th scope="col">Battery Rate</th>
-                <th scope="col">SoC After (kWh)</th>
-                <th scope="col">Tariff (BDT)</th>
+                <th scope="col" class="sticky-col col-hour">Hour</th>
+                <th scope="col" class="col-num">Demand (kWh)</th>
+                <th scope="col" class="col-num">Solar (kWh)</th>
+                <th scope="col" class="col-num">Grid Import (kWh)</th>
+                <th scope="col" class="col-action">Battery Action</th>
+                <th scope="col" class="col-num">Battery Rate</th>
+                <th scope="col" class="col-num">SoC After (kWh)</th>
+                <th scope="col" class="col-num">Tariff (BDT)</th>
               </tr>
             </thead>
             <tbody id="tableBody">
@@ -230,7 +263,7 @@
         </div>
       </div>
 
-      <!-- RAW JSON INSPECTOR -->
+      <!-- RAW JSON INSPECTOR CARD -->
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">
@@ -238,15 +271,15 @@
           </h2>
           <span class="header-badge">REST API Contract</span>
         </div>
-        <div class="grid-2col inspector-grid">
-          <div>
+        <div class="inspector-grid">
+          <div class="json-card">
             <div class="json-header">
               <span class="form-label">Request Payload (POST /optimize-energy)</span>
               <button type="button" class="copy-btn" onclick="copyJson('requestJson')">📋 Copy</button>
             </div>
             <pre class="code-box" id="requestJson">{}</pre>
           </div>
-          <div>
+          <div class="json-card">
             <div class="json-header">
               <span class="form-label">Response Payload (HTTP 200 OK)</span>
               <button type="button" class="copy-btn" onclick="copyJson('responseJson')">📋 Copy</button>
@@ -260,11 +293,12 @@
 
   </main>
 
+  <!-- FOOTER -->
   <footer class="app-footer">
-    <div class="footer-content">
+    <div class="footer-container">
       <span>GridWise 2.0 Engine · BUP CSE Fest 2026 Hackathon</span>
-      <span>•</span>
-      <span>Gemini 3 Flash LLM + Mixed-Integer Guardrail Optimization</span>
+      <span class="footer-dot">•</span>
+      <span>Gemini 3 Flash LLM + Mixed-Integer LP Optimization</span>
     </div>
   </footer>
 

@@ -457,9 +457,9 @@ function renderChart(plan, hoursInput, activeHour = null) {
   }
   ctx.stroke();
 
-  // 3. Draw Grid Import Line (Neon Cyan)
+  // 3. Draw Grid Import Line (Electric Blue/Cyan)
   ctx.beginPath();
-  ctx.strokeStyle = '#06b6d4';
+  ctx.strokeStyle = '#0ea5e9';
   ctx.lineWidth = 2.5;
   for (let h = 0; h < 24; h++) {
     const x = getX(h);
@@ -604,17 +604,18 @@ function renderTable(plan, hoursInput) {
     const actionClass = `action-${p.battery_action}`;
     
     tr.innerHTML = `
-      <td class="sticky-col"><strong>${String(p.hour).padStart(2, '0')}h</strong></td>
-      <td>${inp.demand_kwh.toFixed(1)}</td>
-      <td><span style="color: #f59e0b">${p.solar_used_kwh.toFixed(1)}</span></td>
-      <td><span style="color: ${p.grid_kwh === 0 ? 'var(--accent-emerald)' : '#06b6d4'}; font-weight: 600">${p.grid_kwh.toFixed(1)}</span></td>
-      <td><span class="badge-action ${actionClass}">${p.battery_action}</span></td>
-      <td>${p.battery_kwh > 0 ? p.battery_kwh.toFixed(1) : '-'}</td>
-      <td><span style="color: #10b981; font-weight: 600">${p.battery_energy_after_kwh.toFixed(1)}</span></td>
-      <td style="color: #94a3b8">৳${inp.tariff_bdt_per_kwh}</td>
+      <td class="sticky-col col-hour"><strong>${String(p.hour).padStart(2, '0')}h</strong></td>
+      <td class="col-num">${inp.demand_kwh.toFixed(1)}</td>
+      <td class="col-num"><span style="color: #f59e0b">${p.solar_used_kwh.toFixed(1)}</span></td>
+      <td class="col-num"><span style="color: ${p.grid_kwh === 0 ? '#10b981' : '#38bdf8'}; font-weight: 600">${p.grid_kwh.toFixed(1)}</span></td>
+      <td class="col-action"><span class="badge-action ${actionClass}">${p.battery_action}</span></td>
+      <td class="col-num">${p.battery_kwh > 0 ? p.battery_kwh.toFixed(1) : '-'}</td>
+      <td class="col-num"><span style="color: #10b981; font-weight: 600">${p.battery_energy_after_kwh.toFixed(1)}</span></td>
+      <td class="col-num" style="color: #94a3b8">৳${inp.tariff_bdt_per_kwh}</td>
     `;
     tbody.appendChild(tr);
   });
+
 }
 
 /**
